@@ -6,6 +6,10 @@ from app.api.resume_routes import (
     router as resume_router
 )
 
+from app.api.parsing_routes import (
+    router as parsing_router
+)
+
 app = FastAPI(
     title="AI Resume Analyzer"
 )
@@ -16,6 +20,10 @@ app.include_router(
 
 app.include_router(
     resume_router
+)
+
+app.include_router(
+    parsing_router
 )
 
 @app.get("/")

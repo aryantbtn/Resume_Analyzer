@@ -73,3 +73,31 @@ class ResumeRepository:
         conn.close()
 
         return resume_id
+
+    @staticmethod
+    def get_resume_by_id(
+            resume_id
+    ):
+        conn = Database.get_connection()
+
+        cursor = conn.cursor(
+            dictionary=True
+        )
+
+        query = """
+        SELECT *
+        FROM resumes
+        WHERE id = %s
+        """
+
+        cursor.execute(
+            query,
+            (resume_id,)
+        )
+
+        result = cursor.fetchone()
+
+        cursor.close()
+        conn.close()
+
+        return result
