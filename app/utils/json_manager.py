@@ -6,7 +6,7 @@ import os
 load_dotenv()
 
 
-class JWTManager:
+class JSONManager:
 
     SECRET_KEY = os.getenv(
         "JWT_SECRET_KEY"
@@ -27,21 +27,19 @@ class JWTManager:
 
         payload["exp"] = expire
 
-        token = jwt.encode(
+        return jwt.encode(
             payload,
-            JWTManager.SECRET_KEY,
-            algorithm=JWTManager.ALGORITHM
+            JSONManager.SECRET_KEY,
+            algorithm=JSONManager.ALGORITHM
         )
-
-        return token
 
     @staticmethod
     def verify_token(token):
 
         return jwt.decode(
             token,
-            JWTManager.SECRET_KEY,
+            JSONManager.SECRET_KEY,
             algorithms=[
-                JWTManager.ALGORITHM
+                JSONManager.ALGORITHM
             ]
         )

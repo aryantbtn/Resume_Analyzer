@@ -1,7 +1,7 @@
-import os
-from dotenv import load_dotenv
+from app.utils.hashing import PasswordHasher
 
-load_dotenv()
+print("Starting Test...")
 
-print(os.getenv("DB_HOST"))
-print(os.getenv("DB_USER"))
+hashed = PasswordHasher.hash_password("123456")
+
+print("Hash:", hashed)
