@@ -15,6 +15,9 @@ from app.services.matching_services import (
     MatchingService
 )
 
+from app.services.scoring_service import (
+    ScoringService
+)
 router = APIRouter(
     prefix="/match",
     tags=["Matching"]
@@ -28,6 +31,7 @@ def match_resume_jd(
     resume_id,
     jd_id
 ):
+    print("PHASE 7 ROUTE EXECUTED")
 
     resume = (
         ParsedResumeRepository
@@ -81,14 +85,68 @@ def match_resume_jd(
         )
     )
 
+    experience_score = (
+        MatchingService
+        .calculate_experience_score(
+            resume_data.get(
+                "experience",
+                []
+            ),
+            jd_data.get(
+                "experience",
+                []
+            )
+        )
+    )
+
+    projects_score = (
+        MatchingService
+        .calculate_projects_score(
+            resume_data.get(
+                "projects",
+                []
+            ),
+            jd_data.get(
+                "projects",
+                []
+            )
+        )
+    )
+
+    education_score = (
+        MatchingService
+        .calculate_education_score(
+            resume_data.get(
+                "education",
+                ""
+            ),
+            jd_data.get(
+                "education",
+                ""
+            )
+        )
+    )
+
+    overall_score = (
+        ScoringService
+        .calculate_overall_score(
+            skill_scores[
+                "hybrid_score"
+            ],
+            experience_score,
+            projects_score,
+            education_score
+        )
+    )
+
     return {
-
-        "resume_id":
-            resume_id,
-
-        "jd_id":
-            jd_id,
-
-        "skills":
-            skill_scores
+        "resume_id": resume_id,
+        "jd_id": jd_id,
+        "overall_score": overall_score,
+        "section_scores": {
+            "skills": skill_scores["hybrid_score"],
+            "experience": experience_score,
+            "projects": projects_score,
+            "education": education_score
+        }
     }
