@@ -57,7 +57,8 @@ class ParsedResumeRepository:
         conn = Database.get_connection()
 
         cursor = conn.cursor(
-            dictionary=True
+            dictionary=True,
+            buffered=True
         )
 
         query = """

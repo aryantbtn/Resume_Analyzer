@@ -14,6 +14,10 @@ from app.api.jd_routes import (
     router as jd_router
 )
 
+from app.api.matching_routes import (
+    router as matching_router
+)
+
 app = FastAPI(
     title="AI Resume Analyzer"
 )
@@ -32,6 +36,10 @@ app.include_router(
 
 app.include_router(
     jd_router
+)
+
+app.include_router(
+    matching_router
 )
 
 @app.get("/")
